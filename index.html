@@ -1,0 +1,93 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sherwin Paraiso Z.</title>
+  
+</head>
+<body><center>
+
+  <div class="container">
+
+    <div id="register-form">
+      <h1>Register</h1>
+      <label>Username</label>
+      <input type="text" id="reg-username" placeholder="Enter Username" required /><br><br>
+      <label>Age</label>
+      <input type="number" id="reg-age" placeholder="Enter Age" required /><br><br>
+      <label>Password</label>
+      <input type="password" id="reg-password" placeholder="Enter Password" required /><br><br>
+      <button id="register-btn">Register</button>
+      <p id="register-error"></p>
+    </div>
+
+    <div id="login-form" style="display: none;">
+      <h1>Login</h1>
+      <label for="login-username">Username</label>
+      <input type="text" id="login-username" placeholder="Enter Username" required /><br><br>
+      <label for="login-password">Password</label>
+      <input type="password" id="login-password" placeholder="Enter Password" required /><br><br>
+      <button id="login-btn">Login</button>
+      <p id="login-error"></p>
+    </div>
+
+    <div id="welcome-message" style="display: none;">
+      <h1>WELCOME, <span id="username-display"></span></h1>
+    </div>
+  </div>
+
+  <script>
+    // Handle user registration
+    document.getElementById('register-btn').addEventListener('click', function () {
+      const username = document.getElementById('reg-username').value;
+      const age = document.getElementById('reg-age').value;
+      const passwordInput = document.getElementById('reg-password');
+      const password = passwordInput.value;
+      const errorMsg = document.getElementById('register-error');
+
+      if (username && age && password.length > 0) {
+        // Save user data in local storage
+        localStorage.setItem('username', username);
+        localStorage.setItem('age', age);
+        localStorage.setItem('password', password);
+
+        errorMsg.textContent = 'Registration successful! Now login.';
+        errorMsg.classList.add('success');
+
+        // Show login form
+        document.getElementById('register-form').style.display = 'none';
+        document.getElementById('login-form').style.display = 'block';
+      } else {
+        errorMsg.textContent = 'Please fill out all the blanks.';
+        errorMsg.classList.remove('success');
+      }
+    });
+
+    // Handle user login
+    document.getElementById('login-btn').addEventListener('click', function () {
+      const username = document.getElementById('login-username').value;
+      const password = document.getElementById('login-password').value;
+      const errorMsg = document.getElementById('login-error');
+
+      const storedUsername = localStorage.getItem('username');
+      const storedPassword = localStorage.getItem('password');
+
+      if (!storedUsername || !storedPassword) {
+        errorMsg.textContent = 'You need to register first.';
+      } else if (username === storedUsername && password === storedPassword) {
+        errorMsg.textContent = 'Login successful!';
+        errorMsg.style.color = 'green';
+
+        // Show welcome message
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('welcome-message').style.display = 'block';
+        document.getElementById('username-display').textContent = storedUsername;
+      } else {
+        errorMsg.textContent = 'Invalid username or password.';
+        errorMsg.style.color = 'red';
+      }
+    });
+  </script>
+</body>
+</html>
